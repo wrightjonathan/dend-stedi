@@ -1,0 +1,41 @@
+{
+  "name" : "accelerometer-landing-to-trusted",
+  "jobMode" : "VISUAL",
+  "description" : "",
+  "role" : "arn:aws:iam::609912580349:role/my-glue-service-role",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-609912580349-us-east-1/scripts/accelerometer-landing-to-trusted.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-609912580349-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-609912580349-us-east-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 10,
+  "timeout" : 2880,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1728551191339\":{\"CatalogSource\":{\"Database\":\"sw\",\"Name\":\"accelerometer_landing\",\"Table\":\"accelerometer_landing\"}},\"node-1728552646542\":{\"DropFields\":{\"Inputs\":[\"node-1728553581337\"],\"Name\":\"Drop Fields\",\"Paths\":[[\"email\"],[\"phone\"],[\"customername\"],[\"birthday\"],[\"serialnumber\"],[\"registrationdate\"],[\"lastupdatedate\"],[\"sharewithresearchasofdate\"],[\"sharewithpublicasofdate\"],[\"sharewithfriendsasofdate\"]]}},\"node-1728551202652\":{\"Join\":{\"Columns\":[{\"From\":\"node-1728551191339\",\"Keys\":[[\"user\"]]},{\"From\":\"node-1728551196785\",\"Keys\":[[\"email\"]]}],\"Inputs\":[\"node-1728551191339\",\"node-1728551196785\"],\"JoinType\":\"equijoin\",\"Name\":\"Join\"}},\"node-1728551211807\":{\"S3DirectTarget\":{\"AutoDataQuality\":{\"IsEnabled\":false},\"Compression\":\"gzip\",\"Format\":\"json\",\"Inputs\":[\"node-1728552646542\"],\"Name\":\"Amazon S3\",\"PartitionKeys\":[],\"Path\":\"s3://sw-lake-house/accelerometer/trusted/\",\"SchemaChangePolicy\":{\"Database\":\"sw\",\"EnableUpdateCatalog\":true,\"Table\":\"accelerometer_trusted\",\"UpdateBehavior\":\"UPDATE_IN_DATABASE\"}}},\"node-1728553581337\":{\"DropDuplicates\":{\"Columns\":[],\"Inputs\":[\"node-1728551202652\"],\"Name\":\"Drop Duplicates\"}},\"node-1728551196785\":{\"CatalogSource\":{\"Database\":\"sw\",\"Name\":\"customer_trusted\",\"Table\":\"customer_trusted\"}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "dend-stedi",
+    "branch" : "main",
+    "folder" : "accelerometer-landing-to-trusted"
+  }
+}
