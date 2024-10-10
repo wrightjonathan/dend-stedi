@@ -1,0 +1,41 @@
+{
+  "name" : "customer-trusted-to-curated",
+  "jobMode" : "VISUAL",
+  "description" : "customer with a unique email, have accelerometer data, agreed to share for research",
+  "role" : "arn:aws:iam::609912580349:role/my-glue-service-role",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-609912580349-us-east-1/scripts/customer-trusted-to-curated.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-609912580349-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-609912580349-us-east-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 10,
+  "timeout" : 2880,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1728551211807\":{\"S3DirectTarget\":{\"AutoDataQuality\":{\"IsEnabled\":false},\"Compression\":\"gzip\",\"Format\":\"json\",\"Inputs\":[\"node-1728553581337\"],\"Name\":\"Amazon S3\",\"PartitionKeys\":[],\"Path\":\"s3://sw-lake-house/customer/curated/\",\"SchemaChangePolicy\":{\"Database\":\"sw\",\"EnableUpdateCatalog\":true,\"Table\":\"customer_curated\",\"UpdateBehavior\":\"UPDATE_IN_DATABASE\"}}},\"node-1728553581337\":{\"DropDuplicates\":{\"Columns\":[[\"email\"]],\"Inputs\":[\"node-1728551196785\"],\"Name\":\"Drop Duplicates\"}},\"node-1728551196785\":{\"CatalogSource\":{\"Database\":\"sw\",\"Name\":\"customer_trusted\",\"Table\":\"customer_trusted\"}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "dend-stedi",
+    "branch" : "main",
+    "folder" : "customer-trusted-to-curated"
+  }
+}
