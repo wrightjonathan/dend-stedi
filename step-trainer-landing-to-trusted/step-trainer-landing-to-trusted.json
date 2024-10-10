@@ -1,0 +1,41 @@
+{
+  "name" : "step-trainer-landing-to-trusted",
+  "jobMode" : "VISUAL",
+  "description" : "",
+  "role" : "arn:aws:iam::609912580349:role/my-glue-service-role",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-609912580349-us-east-1/scripts/step-trainer-landing-to-trusted.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-609912580349-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-609912580349-us-east-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 10,
+  "timeout" : 2880,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1728558881767\":{\"CatalogSource\":{\"Database\":\"sw\",\"Name\":\"accelerometer_trusted\",\"Table\":\"accelerometer_trusted\"}},\"node-1728558956519\":{\"ApplyMapping\":{\"Inputs\":[\"node-1728558881767\"],\"Mapping\":[{\"Dropped\":false,\"FromPath\":[\"serialnumber\"],\"FromType\":\"string\",\"ToKey\":\"right_serialnumber\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"z\"],\"FromType\":\"double\",\"ToKey\":\"right_z\",\"ToType\":\"double\"},{\"Dropped\":false,\"FromPath\":[\"birthday\"],\"FromType\":\"string\",\"ToKey\":\"right_birthday\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"sharewithpublicasofdate\"],\"FromType\":\"long\",\"ToKey\":\"right_sharewithpublicasofdate\",\"ToType\":\"long\"},{\"Dropped\":false,\"FromPath\":[\"sharewithresearchasofdate\"],\"FromType\":\"long\",\"ToKey\":\"right_sharewithresearchasofdate\",\"ToType\":\"long\"},{\"Dropped\":false,\"FromPath\":[\"registrationdate\"],\"FromType\":\"long\",\"ToKey\":\"right_registrationdate\",\"ToType\":\"long\"},{\"Dropped\":false,\"FromPath\":[\"customername\"],\"FromType\":\"string\",\"ToKey\":\"right_customername\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"user\"],\"FromType\":\"string\",\"ToKey\":\"right_user\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"sharewithfriendsasofdate\"],\"FromType\":\"long\",\"ToKey\":\"right_sharewithfriendsasofdate\",\"ToType\":\"long\"},{\"Dropped\":false,\"FromPath\":[\"y\"],\"FromType\":\"double\",\"ToKey\":\"right_y\",\"ToType\":\"double\"},{\"Dropped\":false,\"FromPath\":[\"x\"],\"FromType\":\"double\",\"ToKey\":\"right_x\",\"ToType\":\"double\"},{\"Dropped\":false,\"FromPath\":[\"timestamp\"],\"FromType\":\"long\",\"ToKey\":\"right_timestamp\",\"ToType\":\"long\"},{\"Dropped\":false,\"FromPath\":[\"lastupdatedate\"],\"FromType\":\"long\",\"ToKey\":\"right_lastupdatedate\",\"ToType\":\"long\"}],\"Name\":\"Renamed keys for Join\"}},\"node-1728558995270\":{\"S3DirectTarget\":{\"AutoDataQuality\":{\"IsEnabled\":false},\"Compression\":\"gzip\",\"Format\":\"json\",\"Inputs\":[\"node-1728558974140\"],\"Name\":\"Amazon S3\",\"PartitionKeys\":[],\"Path\":\"s3://sw-lake-house/step_trainer/trusted/\",\"SchemaChangePolicy\":{\"Database\":\"sw\",\"EnableUpdateCatalog\":true,\"Table\":\"step_trainer_trusted\",\"UpdateBehavior\":\"UPDATE_IN_DATABASE\"}}},\"node-1728558786852\":{\"S3JsonSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://sw-lake-house/step_trainer/landing/step_trainer-1691348232038.json\"},\"Exclusions\":[],\"JsonPath\":\"\",\"Multiline\":false,\"Name\":\"Amazon S3\",\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"sensorreadingtime\",\"Type\":\"bigint\"},{\"Name\":\"serialnumber\",\"Type\":\"string\"},{\"Name\":\"distancefromobject\",\"Type\":\"int\"}]}],\"Paths\":[\"s3://sw-lake-house/step_trainer/landing/\"],\"Recurse\":true}},\"node-1728558856143\":{\"Join\":{\"Columns\":[{\"From\":\"node-1728558786852\",\"Keys\":[[\"serialnumber\"]]},{\"From\":\"node-1728558956519\",\"Keys\":[[\"right_serialnumber\"]]}],\"Inputs\":[\"node-1728558786852\",\"node-1728558956519\"],\"JoinType\":\"equijoin\",\"Name\":\"Join\"}},\"node-1728558974140\":{\"DropFields\":{\"Inputs\":[\"node-1728558856143\"],\"Name\":\"Drop Fields\",\"Paths\":[[\"right_serialnumber\"],[\"right_z\"],[\"right_birthday\"],[\"right_sharewithpublicasofdate\"],[\"right_sharewithresearchasofdate\"],[\"right_registrationdate\"],[\"right_customername\"],[\"right_user\"],[\"right_sharewithfriendsasofdate\"],[\"right_y\"],[\"right_x\"],[\"right_timestamp\"],[\"right_lastupdatedate\"]]}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "dend-stedi",
+    "branch" : "main",
+    "folder" : "step-trainer-landing-to-trusted"
+  }
+}
