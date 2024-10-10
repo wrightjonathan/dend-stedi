@@ -1,0 +1,41 @@
+{
+  "name" : "customer-landing-to-trusted",
+  "jobMode" : "VISUAL",
+  "description" : "",
+  "role" : "arn:aws:iam::609912580349:role/my-glue-service-role",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-609912580349-us-east-1/scripts/customer-landing-to-trusted.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-609912580349-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-609912580349-us-east-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 10,
+  "timeout" : 2880,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1728515582595\":{\"S3JsonSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://sw-lake-house/customer/landing/customer-1691348231425.json\"},\"Exclusions\":[],\"JsonPath\":\"\",\"Multiline\":false,\"Name\":\"Amazon S3\",\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"customername\",\"Type\":\"string\"},{\"Name\":\"email\",\"Type\":\"string\"},{\"Name\":\"phone\",\"Type\":\"string\"},{\"Name\":\"birthday\",\"Type\":\"string\"},{\"Name\":\"serialnumber\",\"Type\":\"string\"},{\"Name\":\"registrationdate\",\"Type\":\"bigint\"},{\"Name\":\"lastupdatedate\",\"Type\":\"bigint\"},{\"Name\":\"sharewithresearchasofdate\",\"Type\":\"bigint\"},{\"Name\":\"sharewithfriendsasofdate\",\"Type\":\"bigint\"},{\"Name\":\"sharewithpublicasofdate\",\"Type\":\"bigint\"}]}],\"Paths\":[\"s3://sw-lake-house/customer/landing/\"],\"Recurse\":true}},\"node-1728516327834\":{\"SparkSQL\":{\"Inputs\":[\"node-1728515582595\"],\"Name\":\"SQL Query\",\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"customerName\",\"Type\":\"string\"},{\"Name\":\"email\",\"Type\":\"string\"},{\"Name\":\"phone\",\"Type\":\"string\"},{\"Name\":\"birthDay\",\"Type\":\"string\"},{\"Name\":\"serialNumber\",\"Type\":\"string\"},{\"Name\":\"registrationDate\",\"Type\":\"bigint\"},{\"Name\":\"lastUpdateDate\",\"Type\":\"bigint\"},{\"Name\":\"shareWithResearchAsOfDate\",\"Type\":\"bigint\"},{\"Name\":\"shareWithPublicAsOfDate\",\"Type\":\"bigint\"},{\"Name\":\"shareWithFriendsAsOfDate\",\"Type\":\"bigint\"}]}],\"SqlAliases\":[{\"Alias\":\"myDataSource\",\"From\":\"node-1728515582595\"}],\"SqlQuery\":\"select * from myDataSource\\nwhere sharewithresearchasofdate is not null\"}},\"node-1728516524088\":{\"S3DirectTarget\":{\"AutoDataQuality\":{\"IsEnabled\":false},\"Compression\":\"gzip\",\"Format\":\"json\",\"Inputs\":[\"node-1728516327834\"],\"Name\":\"Trusted Customer Zone\",\"PartitionKeys\":[],\"Path\":\"s3://sw-lake-house/customer/trusted/\",\"SchemaChangePolicy\":{\"Database\":\"sw\",\"EnableUpdateCatalog\":true,\"Table\":\"customer_trusted\",\"UpdateBehavior\":\"UPDATE_IN_DATABASE\"}}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "dend-stedi",
+    "branch" : "main",
+    "folder" : "customer-landing-to-trusted"
+  }
+}
